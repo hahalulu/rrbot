@@ -22,7 +22,7 @@ public class LongCommand extends BotCommand {
     private static final String LOGTAG = "LONGCOMMAND";
 
     public LongCommand() {
-        super("long", "syntax: totalBank percentLoss entry stopLoss takeProfit");
+        super("long", "ex: /long bank=100 loss_pct=2 entry=5.5 sl=5.189 tp=6.11");
     }
 
     @Override
@@ -49,7 +49,7 @@ public class LongCommand extends BotCommand {
             messageTextBuilder.append("Entry price: ").append(input.getEntry()).append("\n");
             messageTextBuilder.append("Stop price: ").append(input.getStopLoss()).append("\n");
             messageTextBuilder.append("Take profit: ").append(input.getTakeProfit()).append("\n");
-            messageTextBuilder.append("==================");
+            messageTextBuilder.append("==================\n");
             messageTextBuilder.append("Maximum money: ").append(longPosOutput.getMaxMoney()).append("\n");
             messageTextBuilder.append("Order size: ").append(longPosOutput.getQuantity()).append("\n");
             messageTextBuilder.append("Profit: ").append(longPosOutput.getMaxTakeProfit()).append("\n");

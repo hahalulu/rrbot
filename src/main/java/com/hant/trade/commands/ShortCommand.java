@@ -19,10 +19,10 @@ import org.telegram.telegrambots.meta.logging.BotLogger;
  */
 public class ShortCommand extends BotCommand {
 
-    private static final String LOGTAG = "LONGCOMMAND";
+    private static final String LOGTAG = "SHORTCOMMAND";
 
     public ShortCommand() {
-        super("short", "syntax: totalBank percentLoss entry stopLoss takeProfit");
+        super("short", "ex: /short bank=100 loss_pct=2 entry=5.5 sl=6.11 tp=5.189");
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ShortCommand extends BotCommand {
             messageTextBuilder.append("Entry price: ").append(input.getEntry()).append("\n");
             messageTextBuilder.append("Stop price: ").append(input.getStopLoss()).append("\n");
             messageTextBuilder.append("Take profit: ").append(input.getTakeProfit()).append("\n");
-            messageTextBuilder.append("==================");
+            messageTextBuilder.append("==================\n");
             messageTextBuilder.append("Maximum money: ").append(posOutput.getMaxMoney()).append("\n");
             messageTextBuilder.append("Order size: ").append(posOutput.getQuantity()).append("\n");
             messageTextBuilder.append("Profit: ").append(posOutput.getMaxTakeProfit()).append("\n");

@@ -4,6 +4,7 @@ import com.hant.trade.BotConfig;
 import com.hant.trade.commands.HelloCommand;
 import com.hant.trade.commands.HelpCommand;
 import com.hant.trade.commands.LongCommand;
+import com.hant.trade.commands.ShortCommand;
 import com.hant.trade.commands.StartCommand;
 import com.hant.trade.commands.StopCommand;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -31,6 +32,7 @@ public class CommandsHandler extends TelegramLongPollingCommandBot {
         register(new HelloCommand());
         register(new StartCommand());
         register(new LongCommand());
+        register(new ShortCommand());
         register(new StopCommand());
         HelpCommand helpCommand = new HelpCommand(this);
         register(helpCommand);
