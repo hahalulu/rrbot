@@ -43,7 +43,7 @@ public class ShortCommand extends BotCommand {
             messageTextBuilder.append("You need to type right syntax: totalBank percentLoss entry stopLoss takeProfit\n");
             messageTextBuilder.append(String.join(" ", arguments));
         } else {
-            PosOutput posOutput = calculateLongRisk(input);
+            PosOutput posOutput = calculateShortRisk(input);
             messageTextBuilder.append("Total bank: ").append(input.getTotalBank()).append("\n");
             messageTextBuilder.append("Percent loss: ").append(input.getPercentLoss()).append("\n");
             messageTextBuilder.append("Entry price: ").append(input.getEntry()).append("\n");
@@ -68,16 +68,16 @@ public class ShortCommand extends BotCommand {
         }
     }
 
-    private static PosOutput calculateLongRisk (PosInput input) {
+    private static PosOutput calculateShortRisk(PosInput input) {
         PosOutput posOutput = new PosOutput();
 
-        Double khoanglo = roundAndFormat(input.getEntry()-input.getStopLoss());
+        Double khoanglo = roundAndFormat(input.getStopLoss()-input.getEntry());
         Double maxMoney = roundAndFormat(((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100);
         posOutput.setMaxMoney(maxMoney);
         posOutput.setQuantity(roundAndFormat(maxMoney/input.getEntry()));
         posOutput.setMaxStopLoss(roundAndFormat(input.getPercentLoss() * input.getTotalBank()/100));
 
-        posOutput.setMaxTakeProfit(roundAndFormat(maxMoney * ((input.getEntry() - input.getTakeProfit())/input.getEntry())));
+        posOutput.setMaxTakeProfit(roundAndFormat(maxMoney * ((input.getTakeProfit() - input.getEntry())/input.getEntry())));
         posOutput.setRiskRewardRatio(roundAndFormat(((input.getTakeProfit() - input.getEntry()) / khoanglo)));
 
         return posOutput;
@@ -90,11 +90,11 @@ public class ShortCommand extends BotCommand {
 
     public static void main(String[] args) {
         PosInput input = new PosInput();
-        input.setEntry(27460d);
+        input.setTotalBank(100d);
+        input.setEntry(5.5);
         input.setPercentLoss(2d);
-        input.setTotalBank(379d);
-        input.setStopLoss(27550d);
-        input.setTakeProfit(26465d);
-        System.out.println(calculateLongRisk(input));
+        input.setStopLoss(6.11);
+        input.setTakeProfit(5.189);
+        System.out.println(calculateShortRisk(input));
     }
 }
