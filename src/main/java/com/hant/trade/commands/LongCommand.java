@@ -51,7 +51,7 @@ public class LongCommand extends BotCommand {
             messageTextBuilder.append("Take profit: ").append(input.getTakeProfit()).append("\n");
             messageTextBuilder.append("==================\n");
             messageTextBuilder.append("Maximum money: ").append(longPosOutput.getMaxMoney()).append("\n");
-            messageTextBuilder.append("Order size: ").append(longPosOutput.getQuantity()).append("\n");
+            messageTextBuilder.append("Order size: ").append(longPosOutput.getQuantity().toString()).append("\n");
             messageTextBuilder.append("Profit: ").append(longPosOutput.getMaxTakeProfit()).append("\n");
             messageTextBuilder.append("Loss: ").append(longPosOutput.getMaxStopLoss()).append("\n");
             messageTextBuilder.append("RR ratio: ").append(longPosOutput.getRiskRewardRatio()).append("\n");
@@ -90,11 +90,15 @@ public class LongCommand extends BotCommand {
 
     public static void main(String[] args) {
         PosInput input = new PosInput();
-        input.setEntry(5.5);
+        input.setTotalBank(100d);
+        input.setEntry(32000d);
         input.setPercentLoss(2d);
-        input.setTotalBank(155d);
-        input.setStopLoss(5.189);
-        input.setTakeProfit(6.11);
+        input.setStopLoss(28000d);
+        input.setTakeProfit(42000d);
         System.out.println(calculateLongRisk(input));
+
+        double dexp = 5.0E-4;
+        System.out.printf("dexp: %f\n", dexp);
+
     }
 }
