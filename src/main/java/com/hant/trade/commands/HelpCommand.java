@@ -33,7 +33,9 @@ public class HelpCommand extends BotCommand {
         helpMessageBuilder.append("These are the registered commands for this Bot:\n\n");
 
         for (IBotCommand botCommand : commandRegistry.getRegisteredCommands()) {
-            helpMessageBuilder.append(botCommand.toString()).append("\n\n");
+            if (botCommand.toString().contains("long") || botCommand.toString().contains("short")) {
+                helpMessageBuilder.append(botCommand.toString()).append("\n\n");
+            }
         }
 
         SendMessage helpMessage = new SendMessage();

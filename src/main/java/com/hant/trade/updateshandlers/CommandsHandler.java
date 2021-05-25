@@ -1,7 +1,6 @@
 package com.hant.trade.updateshandlers;
 
 import com.hant.trade.BotConfig;
-import com.hant.trade.commands.HelloCommand;
 import com.hant.trade.commands.HelpCommand;
 import com.hant.trade.commands.LongCommand;
 import com.hant.trade.commands.ShortCommand;
@@ -29,7 +28,6 @@ public class CommandsHandler extends TelegramLongPollingCommandBot {
     public CommandsHandler(String botUsername) {
         super(botUsername);
 
-        register(new HelloCommand());
         register(new StartCommand());
         register(new LongCommand());
         register(new ShortCommand());
