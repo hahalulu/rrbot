@@ -11,12 +11,6 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
-/**
- * This command simply replies with a hello to the users command and
- * sends them the 'kind' words back, which they send via command parameters
- *
- * @author  (Mit0x2)
- */
 public class LongCommand extends BotCommand {
 
     private static final String LOGTAG = "LONGCOMMAND";

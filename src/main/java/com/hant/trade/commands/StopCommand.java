@@ -8,12 +8,6 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
-/**
- * This commands stops the conversation with the bot.
- * Bot won't respond to user until he sends a start command
- *
- * @author  (Mit0x2)
- */
 public class StopCommand extends BotCommand {
 
     public static final String LOGTAG = "STOPCOMMAND";

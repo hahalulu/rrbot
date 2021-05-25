@@ -8,11 +8,6 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
-/**
- * This commands starts the conversation with the bot
- *
- * @author  (Mit0x2)
- */
 public class StartCommand extends BotCommand {
 
     public static final String LOGTAG = "STARTCOMMAND";
@@ -27,7 +22,7 @@ public class StartCommand extends BotCommand {
 
         String userName = user.getFirstName() + " " + user.getLastName();
             messageBuilder.append("Welcome ").append(userName).append("\n");
-            messageBuilder.append("this bot will demonstrate you the command feature of the Java TelegramBots API!");
+            messageBuilder.append("this bot will demonstrate you the command feature of the TelegramBots API!");
 
         SendMessage answer = new SendMessage();
         answer.setChatId(chat.getId().toString());

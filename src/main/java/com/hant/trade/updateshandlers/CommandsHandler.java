@@ -14,17 +14,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
 /**
- * This handler mainly works with commands to demonstrate the Commands feature of the API
- *
- * @author  (Mit0x2)
  */
 public class CommandsHandler extends TelegramLongPollingCommandBot {
 
     public static final String LOGTAG = "COMMANDSHANDLER";
 
-    /**
-     * Constructor.
-     */
     public CommandsHandler(String botUsername) {
         super(botUsername);
 

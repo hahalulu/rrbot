@@ -52,10 +52,6 @@ public class HerokuDemoApplication {
 		return telegramBotsApi;
 	}
 
-	/**
-	 * @brief Creates a Telegram Bots Api to use Long Polling (getUpdates) bots.
-	 * @return TelegramBotsApi to register the bots.
-	 */
 	private static TelegramBotsApi createLongPollingTelegramBotsApi() {
 		return new TelegramBotsApi();
 	}
