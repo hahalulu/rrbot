@@ -71,21 +71,28 @@ public class ShortCommand extends BotCommand {
     private static PosOutput calculateShortRisk(PosInput input) {
         PosOutput posOutput = new PosOutput();
 
-        Double khoanglo = roundAndFormat(input.getStopLoss()-input.getEntry());
-        Double maxMoney = roundAndFormat(((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100);
+        Double khoanglo = Double.valueOf(roundAndFormat(input.getStopLoss()-input.getEntry()));
+        String maxMoney = roundAndFormat(((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100);
+        Double douMaxMoney = Double.valueOf(maxMoney);
+
         posOutput.setMaxMoney(maxMoney);
-        posOutput.setQuantity(roundAndFormat(maxMoney/input.getEntry()));
+        posOutput.setQuantity(roundAndFormat(douMaxMoney/input.getEntry(), 5));
         posOutput.setMaxStopLoss(roundAndFormat(input.getPercentLoss() * input.getTotalBank()/100));
 
-        posOutput.setMaxTakeProfit(roundAndFormat(maxMoney * ((input.getEntry() - input.getTakeProfit())/input.getEntry())));
+        posOutput.setMaxTakeProfit(roundAndFormat(douMaxMoney * ((input.getEntry() - input.getTakeProfit())/input.getEntry())));
         posOutput.setRiskRewardRatio(roundAndFormat(((input.getEntry() - input.getTakeProfit()) / khoanglo)));
 
         return posOutput;
     }
 
-    private static Double roundAndFormat(Double input) {
-        DecimalFormat df = new DecimalFormat("#.####");
-        return Double.valueOf(df.format(input));
+    private static String roundAndFormat(Double input, int maxFrac) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        df.setMaximumFractionDigits(maxFrac);
+        return df.format(input);
+    }
+
+    private static String roundAndFormat(Double input) {
+        return roundAndFormat(input, 4);
     }
 
     public static void main(String[] args) {

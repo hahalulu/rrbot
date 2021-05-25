@@ -51,7 +51,7 @@ public class LongCommand extends BotCommand {
             messageTextBuilder.append("Take profit: ").append(input.getTakeProfit()).append("\n");
             messageTextBuilder.append("==================\n");
             messageTextBuilder.append("Maximum money: ").append(longPosOutput.getMaxMoney()).append("\n");
-            messageTextBuilder.append("Order size: ").append(longPosOutput.getQuantity().toString()).append("\n");
+            messageTextBuilder.append("Order size: ").append(longPosOutput.getQuantity()).append("\n");
             messageTextBuilder.append("Profit: ").append(longPosOutput.getMaxTakeProfit()).append("\n");
             messageTextBuilder.append("Loss: ").append(longPosOutput.getMaxStopLoss()).append("\n");
             messageTextBuilder.append("RR ratio: ").append(longPosOutput.getRiskRewardRatio()).append("\n");
@@ -71,34 +71,42 @@ public class LongCommand extends BotCommand {
     private static PosOutput calculateLongRisk (PosInput input) {
         PosOutput longPosOutput = new PosOutput();
 
-        Double khoanglo = roundAndFormat(input.getEntry()-input.getStopLoss());
-        Double maxMoney = roundAndFormat(((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100);
+        Double khoanglo = Double.valueOf(roundAndFormat(input.getEntry()-input.getStopLoss()));
+        String maxMoney = roundAndFormat(((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100);
+        Double douMaxMoney = Double.valueOf(maxMoney);
         longPosOutput.setMaxMoney(maxMoney);
-        longPosOutput.setQuantity(roundAndFormat(maxMoney/input.getEntry()));
+        longPosOutput.setQuantity(roundAndFormat(douMaxMoney/input.getEntry(), 5));
         longPosOutput.setMaxStopLoss(roundAndFormat(input.getPercentLoss() * input.getTotalBank()/100));
 
-        longPosOutput.setMaxTakeProfit(roundAndFormat(maxMoney * ((input.getTakeProfit()/input.getEntry()) - 1)));
+        longPosOutput.setMaxTakeProfit(roundAndFormat(douMaxMoney * ((input.getTakeProfit()/input.getEntry()) - 1)));
         longPosOutput.setRiskRewardRatio(roundAndFormat(((input.getTakeProfit() - input.getEntry()) / khoanglo)));
 
         return longPosOutput;
     }
 
-    private static Double roundAndFormat(Double input) {
-        DecimalFormat df = new DecimalFormat("#.####");
-        return Double.valueOf(df.format(input));
+    private static String roundAndFormat(Double input, int maxFrac) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        df.setMaximumFractionDigits(maxFrac);
+        return df.format(input);
+    }
+
+    private static String roundAndFormat(Double input) {
+        return roundAndFormat(input, 4);
     }
 
     public static void main(String[] args) {
         PosInput input = new PosInput();
+//        input.setTotalBank(100d);
+//        input.setEntry(5.5);
+//        input.setPercentLoss(2d);
+//        input.setStopLoss(5.189);
+//        input.setTakeProfit(6.11);
         input.setTotalBank(100d);
         input.setEntry(32000d);
         input.setPercentLoss(2d);
         input.setStopLoss(28000d);
         input.setTakeProfit(42000d);
         System.out.println(calculateLongRisk(input));
-
-        double dexp = 5.0E-4;
-        System.out.printf("dexp: %f\n", dexp);
 
     }
 }

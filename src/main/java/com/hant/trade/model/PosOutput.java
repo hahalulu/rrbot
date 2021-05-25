@@ -1,49 +1,49 @@
 package com.hant.trade.model;
 
 public class PosOutput {
-    private Double maxMoney;
-    private Double maxTakeProfit;
-    private Double maxStopLoss;
-    private Double riskRewardRatio;
-    private Double quantity;
+    private String maxMoney;
+    private String maxTakeProfit;
+    private String maxStopLoss;
+    private String riskRewardRatio;
+    private String quantity;
 
-    public Double getMaxMoney() {
+    public String getMaxMoney() {
         return maxMoney;
     }
 
-    public void setMaxMoney(Double maxMoney) {
+    public void setMaxMoney(String maxMoney) {
         this.maxMoney = maxMoney;
     }
 
-    public Double getMaxTakeProfit() {
+    public String getMaxTakeProfit() {
         return maxTakeProfit;
     }
 
-    public void setMaxTakeProfit(Double maxTakeProfit) {
+    public void setMaxTakeProfit(String maxTakeProfit) {
         this.maxTakeProfit = maxTakeProfit;
     }
 
-    public Double getMaxStopLoss() {
+    public String getMaxStopLoss() {
         return maxStopLoss;
     }
 
-    public void setMaxStopLoss(Double maxStopLoss) {
+    public void setMaxStopLoss(String maxStopLoss) {
         this.maxStopLoss = maxStopLoss;
     }
 
-    public Double getRiskRewardRatio() {
+    public String getRiskRewardRatio() {
         return riskRewardRatio;
     }
 
-    public void setRiskRewardRatio(Double riskRewardRatio) {
+    public void setRiskRewardRatio(String riskRewardRatio) {
         this.riskRewardRatio = riskRewardRatio;
     }
 
-    public Double getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 
