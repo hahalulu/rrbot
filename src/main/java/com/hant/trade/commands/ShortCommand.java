@@ -78,7 +78,7 @@ public class ShortCommand extends BotCommand {
         posOutput.setMaxStopLoss(roundAndFormat(input.getPercentLoss() * input.getTotalBank()/100));
 
         posOutput.setMaxTakeProfit(roundAndFormat(maxMoney * ((input.getEntry() - input.getTakeProfit())/input.getEntry())));
-        posOutput.setRiskRewardRatio(roundAndFormat(((input.getTakeProfit() - input.getEntry()) / khoanglo)));
+        posOutput.setRiskRewardRatio(roundAndFormat(((input.getEntry() - input.getTakeProfit()) / khoanglo)));
 
         return posOutput;
     }
