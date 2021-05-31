@@ -21,34 +21,23 @@ public class LongCommand extends BotCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-
         PosInput input = new PosInput();
         for (int i = 0; i < arguments.length; i++) {
-            input.setTotalBank(Double.valueOf(arguments[0].replace("bank=", "")));
-            input.setPercentLoss(Double.valueOf(arguments[1].replace("loss_pct=", "")));
-            input.setEntry(Double.valueOf(arguments[2].replace("entry=", "")));
-            input.setStopLoss(Double.valueOf(arguments[3].replace("sl=", "")));
-            input.setTakeProfit(Double.valueOf(arguments[4].replace("tp=", "")));
+            input.setTotalBank(Double.valueOf(arguments[0].replace("bank=", "").trim()));
+            input.setPercentLoss(Double.valueOf(arguments[1].replace("loss_pct=", "").trim()));
+            input.setEntry(Double.valueOf(arguments[2].replace("entry=", "").trim()));
+            input.setStopLoss(Double.valueOf(arguments[3].replace("sl=", "").trim()));
+            input.setTakeProfit(Double.valueOf(arguments[4].replace("tp=", "").trim()));
         }
         StringBuilder messageTextBuilder = new StringBuilder("Result: ");
         messageTextBuilder.append("\n");
 
         if (arguments == null || arguments.length < 5) {
-            messageTextBuilder.append("You need to type right syntax: totalBank percentLoss entry stopLoss takeProfit\n");
+            messageTextBuilder.append("You need to type right syntax: /long bank=100 loss_pct=2 entry=5.5 sl=5.189 tp=6.11\n");
             messageTextBuilder.append(String.join(" ", arguments));
         } else {
-            PosOutput longPosOutput = calculateLongRisk(input);
-            messageTextBuilder.append("Total bank: ").append(input.getTotalBank()).append("\n");
-            messageTextBuilder.append("Percent loss: ").append(input.getPercentLoss()).append("\n");
-            messageTextBuilder.append("Entry price: ").append(input.getEntry()).append("\n");
-            messageTextBuilder.append("Stop price: ").append(input.getStopLoss()).append("\n");
-            messageTextBuilder.append("Take profit: ").append(input.getTakeProfit()).append("\n");
-            messageTextBuilder.append("==================\n");
-            messageTextBuilder.append("Maximum money: ").append(longPosOutput.getMaxMoney()).append("\n");
-            messageTextBuilder.append("Order size: ").append(longPosOutput.getQuantity()).append("\n");
-            messageTextBuilder.append("Profit: ").append(longPosOutput.getMaxTakeProfit()).append("\n");
-            messageTextBuilder.append("Loss: ").append(longPosOutput.getMaxStopLoss()).append("\n");
-            messageTextBuilder.append("RR ratio: ").append(longPosOutput.getRiskRewardRatio()).append("\n");
+            PosOutput posOutput = calculateLongRisk(input);
+            messageTextBuilder = Util.displayResult(input, posOutput);
         }
 
         SendMessage answer = new SendMessage();
@@ -65,15 +54,15 @@ public class LongCommand extends BotCommand {
     private static PosOutput calculateLongRisk (PosInput input) {
         PosOutput longPosOutput = new PosOutput();
 
-        Double khoanglo = Double.valueOf(roundAndFormat(input.getEntry()-input.getStopLoss()));
-        String maxMoney = roundAndFormat(((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100);
-        Double douMaxMoney = Double.valueOf(maxMoney);
-        longPosOutput.setMaxMoney(maxMoney);
-        longPosOutput.setQuantity(roundAndFormat(douMaxMoney/input.getEntry(), 5));
-        longPosOutput.setMaxStopLoss(roundAndFormat(input.getPercentLoss() * input.getTotalBank()/100));
+        Double khoanglo = input.getEntry()-input.getStopLoss();
+        Double maxMoney = ((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100;
 
-        longPosOutput.setMaxTakeProfit(roundAndFormat(douMaxMoney * ((input.getTakeProfit()/input.getEntry()) - 1)));
-        longPosOutput.setRiskRewardRatio(roundAndFormat(((input.getTakeProfit() - input.getEntry()) / khoanglo)));
+        longPosOutput.setMaxMoney(maxMoney);
+        longPosOutput.setQuantity(maxMoney/input.getEntry());
+        longPosOutput.setMaxStopLoss(input.getPercentLoss() * input.getTotalBank()/100);
+
+        longPosOutput.setMaxTakeProfit(maxMoney * ((input.getTakeProfit()/input.getEntry()) - 1));
+        longPosOutput.setRiskRewardRatio(((input.getTakeProfit() - input.getEntry()) / khoanglo));
 
         return longPosOutput;
     }
@@ -100,7 +89,11 @@ public class LongCommand extends BotCommand {
         input.setPercentLoss(2d);
         input.setStopLoss(28000d);
         input.setTakeProfit(42000d);
-        System.out.println(calculateLongRisk(input));
 
+        PosOutput posOutput = calculateLongRisk(input);
+        System.out.println(posOutput);
+
+        StringBuilder messageTextBuilder = Util.displayResult(input, posOutput);
+        System.out.println(messageTextBuilder);
     }
 }

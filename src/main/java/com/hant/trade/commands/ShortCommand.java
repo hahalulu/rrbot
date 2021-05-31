@@ -21,34 +21,22 @@ public class ShortCommand extends BotCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-
         PosInput input = new PosInput();
         for (int i = 0; i < arguments.length; i++) {
-            input.setTotalBank(Double.valueOf(arguments[0].replace("bank=", "")));
-            input.setPercentLoss(Double.valueOf(arguments[1].replace("loss_pct=", "")));
-            input.setEntry(Double.valueOf(arguments[2].replace("entry=", "")));
-            input.setStopLoss(Double.valueOf(arguments[3].replace("sl=", "")));
-            input.setTakeProfit(Double.valueOf(arguments[4].replace("tp=", "")));
+            input.setTotalBank(Double.valueOf(arguments[0].replace("bank=", "").trim()));
+            input.setPercentLoss(Double.valueOf(arguments[1].replace("loss_pct=", "").trim()));
+            input.setEntry(Double.valueOf(arguments[2].replace("entry=", "").trim()));
+            input.setStopLoss(Double.valueOf(arguments[3].replace("sl=", "").trim()));
+            input.setTakeProfit(Double.valueOf(arguments[4].replace("tp=", "").trim()));
         }
-        StringBuilder messageTextBuilder = new StringBuilder("Result: ");
-        messageTextBuilder.append("\n");
+        StringBuilder messageTextBuilder = new StringBuilder();
 
         if (arguments == null || arguments.length < 5) {
-            messageTextBuilder.append("You need to type right syntax: totalBank percentLoss entry stopLoss takeProfit\n");
+            messageTextBuilder.append("You need to type right syntax: /short bank=100 loss_pct=2 entry=5.5 sl=6.11 tp=5.189\n");
             messageTextBuilder.append(String.join(" ", arguments));
         } else {
             PosOutput posOutput = calculateShortRisk(input);
-            messageTextBuilder.append("Total bank: ").append(input.getTotalBank()).append("\n");
-            messageTextBuilder.append("Percent loss: ").append(input.getPercentLoss()).append("\n");
-            messageTextBuilder.append("Entry price: ").append(input.getEntry()).append("\n");
-            messageTextBuilder.append("Stop price: ").append(input.getStopLoss()).append("\n");
-            messageTextBuilder.append("Take profit: ").append(input.getTakeProfit()).append("\n");
-            messageTextBuilder.append("==================\n");
-            messageTextBuilder.append("Maximum money: ").append(posOutput.getMaxMoney()).append("\n");
-            messageTextBuilder.append("Order size: ").append(posOutput.getQuantity()).append("\n");
-            messageTextBuilder.append("Profit: ").append(posOutput.getMaxTakeProfit()).append("\n");
-            messageTextBuilder.append("Loss: ").append(posOutput.getMaxStopLoss()).append("\n");
-            messageTextBuilder.append("RR ratio: ").append(posOutput.getRiskRewardRatio()).append("\n");
+            messageTextBuilder = Util.displayResult(input, posOutput);
         }
 
         SendMessage answer = new SendMessage();
@@ -65,37 +53,31 @@ public class ShortCommand extends BotCommand {
     private static PosOutput calculateShortRisk(PosInput input) {
         PosOutput posOutput = new PosOutput();
 
-        Double khoanglo = Double.valueOf(roundAndFormat(input.getStopLoss()-input.getEntry()));
-        String maxMoney = roundAndFormat(((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100);
-        Double douMaxMoney = Double.valueOf(maxMoney);
+        Double khoanglo = input.getStopLoss()-input.getEntry();
+        Double maxMoney = ((input.getTotalBank() * input.getPercentLoss()) / khoanglo) * input.getEntry()/100;
 
         posOutput.setMaxMoney(maxMoney);
-        posOutput.setQuantity(roundAndFormat(douMaxMoney/input.getEntry(), 5));
-        posOutput.setMaxStopLoss(roundAndFormat(input.getPercentLoss() * input.getTotalBank()/100));
+        posOutput.setQuantity(maxMoney/input.getEntry());
+        posOutput.setMaxStopLoss(input.getPercentLoss() * input.getTotalBank()/100);
 
-        posOutput.setMaxTakeProfit(roundAndFormat(douMaxMoney * ((input.getEntry() - input.getTakeProfit())/input.getEntry())));
-        posOutput.setRiskRewardRatio(roundAndFormat(((input.getEntry() - input.getTakeProfit()) / khoanglo)));
+        posOutput.setMaxTakeProfit((maxMoney * ((input.getEntry() - input.getTakeProfit())/input.getEntry())));
+        posOutput.setRiskRewardRatio(((input.getEntry() - input.getTakeProfit()) / khoanglo));
 
         return posOutput;
     }
 
-    private static String roundAndFormat(Double input, int maxFrac) {
-        DecimalFormat df = new DecimalFormat("#.#");
-        df.setMaximumFractionDigits(maxFrac);
-        return df.format(input);
-    }
-
-    private static String roundAndFormat(Double input) {
-        return roundAndFormat(input, 4);
-    }
-
     public static void main(String[] args) {
+
         PosInput input = new PosInput();
-        input.setTotalBank(100d);
-        input.setEntry(5.5);
-        input.setPercentLoss(2d);
-        input.setStopLoss(6.11);
-        input.setTakeProfit(5.189);
-        System.out.println(calculateShortRisk(input));
+        input.setTotalBank(0.04997);
+        input.setEntry(0.00004490);
+        input.setPercentLoss(8d);
+        input.setStopLoss(0.00004630);
+        input.setTakeProfit(0.00003960);
+        PosOutput posOutput = calculateShortRisk(input);
+        System.out.println(posOutput);
+
+        StringBuilder messageTextBuilder = Util.displayResult(input, posOutput);
+        System.out.println(messageTextBuilder);
     }
 }
