@@ -25,14 +25,21 @@ public class PriceEODController {
         this.restTemplate = builder.build();
     }
 
+    /**
+     * https://finfo-api.vndirect.com.vn/v4/derivative_prices?q=deriCode:VN30F1M~date:gte:2020-06-12&size=1
+     * @param symbol
+     * @param fromDate
+     * @param toDate
+     * @return
+     */
     @GetMapping("/derivative-prices")
     public List<DerivativePrice> derivativePrices(
-            @RequestParam(value = "deriCode") String deriCode,
+            @RequestParam(value = "symbol") String symbol,
             @RequestParam(value = "fromDate", required = false) String fromDate,
             @RequestParam(value = "toDate", required = false) String toDate
     ) {
         StringBuilder endpoint = new StringBuilder(finfoUrl);
-        endpoint.append("/derivative_prices?q=deriCode:").append(deriCode);
+        endpoint.append("/derivative_prices?q=code:").append(symbol);
         if (!StringUtils.isEmpty(fromDate)) endpoint.append("~date:gte:").append(fromDate);
         if (!StringUtils.isEmpty(toDate)) endpoint.append("~date:lte:").append(toDate);
         endpoint.append("&size=5000");
