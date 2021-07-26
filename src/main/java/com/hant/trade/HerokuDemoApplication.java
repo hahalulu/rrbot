@@ -17,29 +17,29 @@ public class HerokuDemoApplication {
 	private static final String LOGTAG = "MAIN";
 
 	public static void main(String[] args) {
-		// BotLogger.setLevel(Level.ALL);
-		// BotLogger.registerLogger(new ConsoleHandler());
-		// try {
-		// 	BotLogger.registerLogger(new BotsFileHandler());
-		// } catch (IOException e) {
-		// 	BotLogger.severe(LOGTAG, e);
-		// }
+		 BotLogger.setLevel(Level.ALL);
+		 BotLogger.registerLogger(new ConsoleHandler());
+		 try {
+		 	BotLogger.registerLogger(new BotsFileHandler());
+		 } catch (IOException e) {
+		 	BotLogger.severe(LOGTAG, e);
+		 }
 
-		// try {
-		// 	BotLogger.info(LOGTAG, "Starting bot...");
+		 try {
+		 	BotLogger.info(LOGTAG, "Starting bot...");
 
-		// 	ApiContextInitializer.init();
-		// 	TelegramBotsApi telegramBotsApi = createTelegramBotsApi();
-		// 	try {
-		// 		// Register long polling bots. They work regardless type of TelegramBotsApi we are creating
-		// 		telegramBotsApi.registerBot(new CommandsHandler(BotConfig.COMMANDS_USER));
-		// 		BotLogger.info(LOGTAG, "Started bot...");
-		// 	} catch (TelegramApiException e) {
-		// 		BotLogger.error(LOGTAG, e);
-		// 	}
-		// } catch (Exception e) {
-		// 	BotLogger.error(LOGTAG, e);
-		// }
+		 	ApiContextInitializer.init();
+		 	TelegramBotsApi telegramBotsApi = createTelegramBotsApi();
+		 	try {
+		 		// Register long polling bots. They work regardless type of TelegramBotsApi we are creating
+		 		telegramBotsApi.registerBot(new CommandsHandler(BotConfig.COMMANDS_USER));
+		 		BotLogger.info(LOGTAG, "Started bot...");
+		 	} catch (TelegramApiException e) {
+		 		BotLogger.error(LOGTAG, e);
+		 	}
+		 } catch (Exception e) {
+		 	BotLogger.error(LOGTAG, e);
+		 }
 
 		SpringApplication.run(HerokuDemoApplication.class, args);
 
