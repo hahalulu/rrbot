@@ -42,8 +42,8 @@ public class PriceEODController {
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
-        String[] csvHeader = {"code", "deriCode", "date", "time", "floor", "open", "high", "low", "close", "nmVolume", "ptVolume", "change"};
-        String[] nameMapping = {"code", "deriCode", "date", "time", "floor", "open", "high", "low", "close", "nmVolume", "ptVolume", "pctChange"};
+        String[] csvHeader = {"code", "deriCode", "date", "time", "floor", "open", "high", "low", "close", "nmVolume", "ptVolume", "change", "lastPrice"};
+        String[] nameMapping = {"code", "deriCode", "date", "time", "floor", "open", "high", "low", "close", "nmVolume", "ptVolume", "pctChange", "lastPrice"};
 
         csvWriter.writeHeader(csvHeader);
 
@@ -74,8 +74,8 @@ public class PriceEODController {
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
-        String[] csvHeader = {"code", "date", "floor", "open", "high", "low", "close", "nmVolume", "ptVolume", "change"};
-        String[] nameMapping = {"code", "date", "floor", "open", "high", "low", "close", "nmVolume", "ptVolume", "pctChange"};
+        String[] csvHeader = {"code", "date", "floor", "open", "high", "low", "close", "nmVolume", "ptVolume", "change", "lastPrice"};
+        String[] nameMapping = {"code", "date", "floor", "open", "high", "low", "close", "nmVolume", "ptVolume", "pctChange", "lastPrice"};
 
         csvWriter.writeHeader(csvHeader);
 
@@ -99,8 +99,8 @@ public class PriceEODController {
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
-        String[] csvHeader = {"code", "date", "open", "high", "low", "close", "volume", "change"};
-        String[] nameMapping = {"indexCode", "tradingDate", "openPrice", "highestPrice", "lowestPrice", "closePrice", "totalQtty", "percentageChange"};
+        String[] csvHeader = {"code", "date", "open", "high", "low", "close", "volume", "change", "lastPrice"};
+        String[] nameMapping = {"indexCode", "tradingDate", "openPrice", "highestPrice", "lowestPrice", "closePrice", "totalQtty", "percentageChange", "lastPrice"};
 
         csvWriter.writeHeader(csvHeader);
 
@@ -124,8 +124,8 @@ public class PriceEODController {
 
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
-        String[] csvHeader = {"code", "date", "open", "high", "low", "close", "volume", "change"};
-        String[] nameMapping = {"indexCode", "tradingDate", "openPrice", "highestPrice", "lowestPrice", "closePrice", "totalQtty", "percentageChange"};
+        String[] csvHeader = {"code", "date", "open", "high", "low", "close", "volume", "change", "lastPrice"};
+        String[] nameMapping = {"indexCode", "tradingDate", "openPrice", "highestPrice", "lowestPrice", "closePrice", "totalQtty", "percentageChange", "lastPrice"};
 
         csvWriter.writeHeader(csvHeader);
 

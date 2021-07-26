@@ -9,12 +9,18 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
 public class PriceService {
+    public static final String START_DATE = "2019-07-19";
     private final String finfoUrl = "https://finfo-api.vndirect.com.vn";
     private RestTemplate restTemplate;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
 
     public PriceService(RestTemplateBuilder builder) {
         this.restTemplate = builder.build();
@@ -27,14 +33,22 @@ public class PriceService {
      */
     public List<DerivativePrice> getDerivativePrices(String symbol) {
         StringBuilder endpoint = new StringBuilder(finfoUrl);
-        endpoint.append("/v4/derivative_prices?q=code:").append(symbol);
-        endpoint.append("~date:gte:").append("2019-07-20");
+        endpoint.append("/v4/derivative_prices?q=deriCode:").append(symbol);
+        endpoint.append("~date:gte:").append(START_DATE);
         endpoint.append("&size=5000");
 
         BotLogger.info("PriceEODController", endpoint.toString());
         ResponseEntity<PageDerivativePrice> exchange = restTemplate.exchange(endpoint.toString(), HttpMethod.GET, null, PageDerivativePrice.class);
 
-        return exchange.getBody().getData();
+        List<DerivativePrice> derivativePrices = exchange.getBody().getData();
+        derivativePrices.sort(Comparator.comparing(i -> LocalDate.parse(i.getDate(), formatter)));
+
+        for (int i = 1; i < derivativePrices.size(); i++) {
+            derivativePrices.get(i).setLastPrice(derivativePrices.get(i-1).getClose());
+        }
+        derivativePrices.remove(0);
+
+        return derivativePrices;
     }
 
     /**
@@ -45,13 +59,21 @@ public class PriceService {
     public List<StockPrice> getStockPrices(String symbol) {
         StringBuilder endpoint = new StringBuilder(finfoUrl);
         endpoint.append("/v4/stock_prices?q=code:").append(symbol);
-        endpoint.append("~date:gte:").append("2019-07-20");
+        endpoint.append("~date:gte:").append(START_DATE);
         endpoint.append("&size=5000");
 
         BotLogger.info("PriceEODController", endpoint.toString());
         ResponseEntity<PageStockPrice> exchange = restTemplate.exchange(endpoint.toString(), HttpMethod.GET, null, PageStockPrice.class);
 
-        return exchange.getBody().getData();
+        List<StockPrice> stockPrices = exchange.getBody().getData();
+        stockPrices.sort(Comparator.comparing(i -> LocalDate.parse(i.getDate(), formatter)));
+
+        for (int i = 1; i < stockPrices.size(); i++) {
+            stockPrices.get(i).setLastPrice(stockPrices.get(i-1).getClose());
+        }
+        stockPrices.remove(0);
+
+        return stockPrices;
     }
 
     /**
@@ -61,13 +83,21 @@ public class PriceService {
     public List<IndexInfo> getVnIndex(String symbol) {
         StringBuilder endpoint = new StringBuilder(finfoUrl);
         endpoint.append("/index/securities/vnmarket?indexCodes=").append(symbol);
-        endpoint.append("&fromDate=").append("2019-07-20");
+        endpoint.append("&fromDate=").append(START_DATE);
         endpoint.append("&size=5000");
 
         BotLogger.info("PriceEODController", endpoint.toString());
         ResponseEntity<PageIndexInfo> exchange = restTemplate.exchange(endpoint.toString(), HttpMethod.GET, null, PageIndexInfo.class);
 
-        return exchange.getBody().getData();
+        List<IndexInfo> indexInfos = exchange.getBody().getData();
+        indexInfos.sort(Comparator.comparing(i -> LocalDate.parse(i.getTradingDate(), formatter)));
+
+        for (int i = 1; i < indexInfos.size(); i++) {
+            indexInfos.get(i).setLastPrice(indexInfos.get(i-1).getClosePrice());
+        }
+        indexInfos.remove(0);
+
+        return indexInfos;
     }
 
 }

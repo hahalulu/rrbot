@@ -20,6 +20,7 @@ public class DerivativePrice {
     private String ptValue;
     private String accumulatedVol;
     private String accumulatedVal;
+    private String lastPrice;
 
     public String getCode() {
         return code;
@@ -171,5 +172,13 @@ public class DerivativePrice {
 
     public void setAccumulatedVal(String accumulatedVal) {
         this.accumulatedVal = accumulatedVal;
+    }
+
+    public String getLastPrice() {
+        return lastPrice;
+    }
+
+    public void setLastPrice(String lastPrice) {
+        this.lastPrice = lastPrice;
     }
 }

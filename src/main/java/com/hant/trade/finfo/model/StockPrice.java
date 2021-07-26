@@ -11,6 +11,7 @@ public class StockPrice {
     private String nmVolume;
     private String ptVolume;
     private String pctChange;
+    private String lastPrice;
 
     public String getCode() {
         return code;
@@ -90,5 +91,13 @@ public class StockPrice {
 
     public void setPctChange(String pctChange) {
         this.pctChange = pctChange;
+    }
+
+    public String getLastPrice() {
+        return lastPrice;
+    }
+
+    public void setLastPrice(String lastPrice) {
+        this.lastPrice = lastPrice;
     }
 }

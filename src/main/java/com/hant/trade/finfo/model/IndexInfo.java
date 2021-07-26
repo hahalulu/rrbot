@@ -9,6 +9,7 @@ public class IndexInfo {
     private String lowestPrice;
     private String closePrice;
     private String percentageChange;
+    private String lastPrice;
 
     public String getIndexCode() {
         return indexCode;
@@ -72,5 +73,13 @@ public class IndexInfo {
 
     public void setPercentageChange(String percentageChange) {
         this.percentageChange = percentageChange;
+    }
+
+    public String getLastPrice() {
+        return lastPrice;
+    }
+
+    public void setLastPrice(String lastPrice) {
+        this.lastPrice = lastPrice;
     }
 }
